@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block head %}
+You can add your product here
+<form class="row g-3" method="POST">
+  {{ add_form.csrf_token }}
+  <div class="col-auto">
+    {{add_form.name(class_="form-control")}}
+  </div>
+  <div class="col-auto">
+    {{add_form.price(class_="form-control")}}
+  </div>
+  <div class="col-auto">
+    {{add_form.add(class_="btn btn-success mb-3")}}
+  </div>
+</form>
+You can edit your product here
+<form class="row g-3" method="POST">
+  {{ edit_form.csrf_token }}
+  <div class="col-auto">
+    {{edit_form.name(class_="form-control")}}
+  </div>
+  <div class="col-auto">
+    {{edit_form.price(class_="form-control")}}
+  </div>
+  <div class="col-auto">
+    {{edit_form.edit(class_="btn btn-secondary mb-3")}}
+  </div>
+</form>
+You can delete your product here
+<form class="row g-3" method="POST">
+  {{ delete_form.csrf_token }}
+  <div class="col-auto">
+    {{delete_form.name(class_="form-control")}}
+  </div>
+  <div class="col-auto">
+    {{delete_form.remove(class_="btn btn-danger mb-3")}}
+  </div>
+</form>
+<table class="table table-success table-striped">
+  <thead>
+    <th scope="col"><center>Product Name</center></th>
+    <th scope="col"><center>Product Price</center></th>
+  </thead>
+  <tbody>
+{%for i in all_products%}
+<tr>
+  <td><center>{{i.name}}</center></td>
+  <td><center>&#x20B9 {{i.price}}</center></td>
+</tr>
+{%endfor%}
+</tbody>
+</table>
+{% endblock %}
