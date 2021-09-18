@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block head %}
-You can add your product here
+<p><strong>You can add your product here</strong>
+
 <form class="row g-3" method="POST">
   {{ add_form.csrf_token }}
   <div class="col-auto">
@@ -13,7 +14,11 @@ You can add your product here
     {{add_form.add(class_="btn btn-success mb-3")}}
   </div>
 </form>
-You can edit your product here
+</p>
+<p>
+  <strong>You can edit your product here</strong>
+  <br>
+(Change the price of the product)
 <form class="row g-3" method="POST">
   {{ edit_form.csrf_token }}
   <div class="col-auto">
@@ -26,7 +31,24 @@ You can edit your product here
     {{edit_form.edit(class_="btn btn-secondary mb-3")}}
   </div>
 </form>
-You can delete your product here
+
+(change the name of the product)
+<form class="row g-3" method="POST">
+  {{ edit_name_form.csrf_token }}
+  <div class="col-auto">
+    {{edit_name_form.old_name(class_="form-control")}}
+  </div>
+  <div class="col-auto">
+    {{edit_name_form.new_name(class_="form-control")}}
+  </div>
+  <div class="col-auto">
+    {{edit_name_form.edit(class_="btn btn-secondary mb-3")}}
+  </div>
+</form>
+</p>
+<p>
+  <strong>
+You can delete your product here</strong>
 <form class="row g-3" method="POST">
   {{ delete_form.csrf_token }}
   <div class="col-auto">
@@ -36,6 +58,8 @@ You can delete your product here
     {{delete_form.remove(class_="btn btn-danger mb-3")}}
   </div>
 </form>
+
+</p>
 <table class="table table-success table-striped">
   <thead>
     <th scope="col"><center>Product Name</center></th>

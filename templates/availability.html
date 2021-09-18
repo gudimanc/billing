@@ -1,4 +1,53 @@
 {% extends "base.html" %}
+
 {% block head %}
- 
+<p><strong>Following is list of Items avaialable and their respective avaialable quantity</strong></p>
+<p>(change the quantity as per convinience)</p>
+<form class="row g-3" method="POST">
+  {{ form.csrf_token }}
+  {% if form.errors %}
+  {{ form.errors }}
+  {% endif %}
+
+
+<table class="table table-primary table-striped">
+  <thead>
+    <th scope="col">
+      <center>Product Name</center>
+    </th>
+    <th scope="col">
+      <center>Product Quantity</center>
+    </th>
+    <th scope="col"></th>
+  </thead>
+  <tbody>
+
+    {%for i in all_products%}
+    <tr>
+      <td>
+        <center>{{i.name}}</center>
+      </td>
+      <td>
+        <center>{{i.available_quantity}}</center>
+      </td>
+      <td></td>
+    </tr>
+    {%endfor%}
+    <tr>
+      <td>
+        <center>{{form.name(class_="form-select",style="width: 25%")}}</center>
+      </td>
+      <td>
+        <center>{{form.available_quantity(class_="form-control",style="width: 25%")}}</center>
+      </td>
+      <td>
+        <center>{{form.change(class_="btn btn-secondary")}}</center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</form>
+
+
+  
 {% endblock %}

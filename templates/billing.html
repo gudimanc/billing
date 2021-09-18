@@ -1,4 +1,98 @@
 {% extends "base.html" %}
 {% block head %}
-  HI
+
+<table class="table table-warning table-striped">
+
+  <tbody>
+    <form class="row g-3" method="POST">
+      {{ form.csrf_token }}
+      <tr>
+        <td>
+          <center>{{form.name(class_="form-select")}}</center>
+        </td>
+        <td>
+          <center>{{form.quantity(class_="form-control")}}</center>
+        </td>
+        <td>
+          <center>{{form.add(class_="form-control")}}</center>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <center>
+            <form class="row g-3" method="POST">
+              {{cb.csrf_token}}
+              {{cb.clear(class_="form-control")}}
+            </form>
+          </center>
+        </td>
+        <td></td>
+        <form class="row g-3" method="POST">
+          {{ub.csrf_token}}
+          <td>
+            <center>
+
+              {{ub.undo(class_="form-control")}}
+
+            </center>
+          </td>
+        </form>
+      </tr>
+    </form>
+  </tbody>
+</table>
+<table class="table table-bordered table-info table-striped">
+  <thead>
+    <th scope="col">
+      <center>Product Name</center>
+    </th>
+    <th scope="col">
+      <center>Price</center>
+    </th>
+    <th scope="col">
+      <center>Quantity</center>
+    </th>
+
+    <th scope="col">
+      <center>Amount</center>
+    </th>
+  </thead>
+  <tbody>
+
+    {%for out in outs%}
+    <tr>
+      <td>
+        <center>{{out.name}}</center>
+      </td>
+      <td>
+        <center>
+          {{out.price}}
+        </center>
+      </td>
+      <td>
+        <center> {{out.quantity}}</center>
+      </td>
+
+      <td>
+        <center>{{out.amount}}</center>
+      </td>
+    </tr>
+    {%endfor%}
+    <tr>
+      <td colspan="3">
+        <center>Total Amount</center>
+      </td>
+      <td>
+        <center>{{amount}}</center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<form class="row g-3" method="POST">
+  {{gb.csrf_token}}
+  {{gb.name(class_="form-control")}}
+  {{gb.genbill(class_="form-control btn btn-secondary")}}
+</form>
+
+
 {% endblock %}
