@@ -160,6 +160,15 @@ def billing():
             o['id'] = Bill.query.filter_by(name=gb.name.data,details=str(o)).first().id
             df=pd.DataFrame(o)
             print(df)
+            for name in df['name'].values:
+
+                e=Products.query.filter_by(name=name).first()
+
+                orig_quantity = int(e.available_quantity) if e.available_quantity != None else 0
+                e.available_quantity = orig_quantity - int(df[df['name']==name]['quantity'])
+                db.session.add(e)
+            db.session.commit()
+            print()
             today = datetime.datetime.now() 
             dst_path = os.path.join('bills',str(today.year),str(today.month),str(today.day))
             if not os.path.exists(dst_path):
@@ -167,15 +176,46 @@ def billing():
             
             doc = docx.Document()
             
-            doc.add_heading('Invoice', 0)   
+            doc.add_heading('Invoice', 0) 
+            
+ 
+            d2 = today.strftime("%B %d, %Y")
+            doc.add_heading('Name: '+str(b.name).title(), level=2)
+            doc.add_heading('Date: '+str(d2), level=2)
+            doc.add_heading('',level=1)
+            table = doc.add_table(rows=1, cols=4)
+            hdr_cells = table.rows[0].cells
+            hdr_cells[0].text = 'Name'
+            hdr_cells[1].text = 'Quantity'
+            hdr_cells[2].text = 'Price'
+            hdr_cells[3].text = 'Amount'
+            records = df[['name','quantity','price','amount']].values
+            for name, qty, prc, amt in records:
+                row_cells = table.add_row().cells
+                row_cells[0].text = str(name)
+                row_cells[1].text = str(qty)
+                row_cells[2].text = str(prc)
+                row_cells[3].text = str(amt)
+            
+            row_cells = table.add_row().cells
+            row_cells[0].text = ''
+            row_cells[1].text = ''
+            row_cells[2].text = 'Total'
+            row_cells[3].text = str(sum(list(df['amount'].values)))
+            print(b.name)
             dst_path=os.path.join(basedir,dst_path,'Bill_'+str(today.time()).replace(':','_').replace('.','_')+'.docx')  
             with open(dst_path,'w') as fp:
                 pass
             doc.save(dst_path)
+            os.system('start '+dst_path)
             return redirect(url_for('billing'))
         return render_template('billing.html',form=form,cb=cb,outs=outs,ub=ub,amount=amount,gb=gb)
     except Exception as e:
         print(e)
+        import sys
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print(exc_type, fname, exc_tb.tb_lineno)
         return redirect(url_for('billing'))
 
 
